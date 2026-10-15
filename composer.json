@@ -1,0 +1,47 @@
+{
+    "name": "omnilab/exoplanets",
+    "type": "library",
+    "description": "Omnilab NASA Exoplanet Archive: a confirmed exoplanet by its name (51 Peg b, Kepler-22b, Proxima Centauri b, Dimidium) - its mass, radius, density, orbit, equilibrium temperature and insolation with units and uncertainties, how, when and where it was discovered, its host star's parameters and the system's position, distance and magnitudes, the host star's designations (HD, HIP, TIC, Gaia DR3) as a related thing - a search by name and a selection by simple criteria, through the archive's TAP service in ADQL, no key needed.",
+    "keywords": [
+        "science",
+        "astronomy",
+        "exoplanets",
+        "nasa",
+        "ipac",
+        "tap",
+        "adql",
+        "planets",
+        "omnilab"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marco Meyer",
+            "email": "marco.meyer@glitchr.io"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "glitchr/omnilab": "^1.0@dev",
+        "symfony/http-client": "^6.4|^7.0|^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Omnilab\\Exoplanets\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Omnilab\\Exoplanets\\Tests\\": "Tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

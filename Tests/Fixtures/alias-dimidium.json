@@ -1,0 +1,86 @@
+{
+    "manifest": {
+        "requested_name": "Dimidium",
+        "resolved_name": "51 Peg b",
+        "system_name": "51 Peg",
+        "lookup_status": "OK",
+        "compilation_date": "2026-10-15 01:50:23.696882",
+        "system_snapshot": {
+            "number_of_stars": 1,
+            "number_of_planets": 1
+        }
+    },
+    "system": {
+        "system_info": {
+            "id": "51 Peg",
+            "alias_set": {
+                "item_count": 1,
+                "default_name": "51 Peg",
+                "aliases": [
+                    "51 Peg"
+                ]
+            }
+        },
+        "objects": {
+            "stellar_set": {
+                "item_count": 1,
+                "stars": {
+                    "51 Peg": {
+                        "is_host": "True",
+                        "alias_set": {
+                            "item_count": 15,
+                            "default_name": "51 Peg",
+                            "aliases": [
+                                "Gaia DR3 2835207319109249920",
+                                "51 Peg",
+                                "GJ 882",
+                                "HR 8729",
+                                "HD 217014",
+                                "Helvetios",
+                                "BD+19 5036",
+                                "HIP 113357",
+                                "SAO 90896",
+                                "IRAS 22550+2030",
+                                "TYC 1717-02193-1",
+                                "2MASS J22572795+2046077",
+                                "WISE J225728.12+204608.6",
+                                "TIC 139298196",
+                                "Gaia DR2 2835207319109249920"
+                            ]
+                        }
+                    }
+                }
+            },
+            "planet_set": {
+                "item_count": 1,
+                "planets": {
+                    "51 Peg b": {
+                        "requested_object": "True",
+                        "alias_set": {
+                            "item_count": 16,
+                            "default_name": "51 Peg b",
+                            "aliases": [
+                                "Gaia DR3 2835207319109249920 b",
+                                "TIC 139298196 b",
+                                "Gaia DR2 2835207319109249920 b",
+                                "51 Peg b",
+                                "Dimidium",
+                                "GJ 882 b",
+                                "HR 8729 b",
+                                "HD 217014 b",
+                                "Helvetios b",
+                                "BD+19 5036 b",
+                                "HIP 113357 b",
+                                "SAO 90896 b",
+                                "IRAS 22550+2030 b",
+                                "TYC 1717-02193-1 b",
+                                "2MASS J22572795+2046077 b",
+                                "WISE J225728.12+204608.6 b"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

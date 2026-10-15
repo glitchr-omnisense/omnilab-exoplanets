@@ -1,0 +1,221 @@
+{
+    "manifest": {
+        "requested_name": "Proxima Centauri b",
+        "resolved_name": "Proxima Cen b",
+        "system_name": "alf Cen",
+        "lookup_status": "OK",
+        "compilation_date": "2026-10-15 01:50:16.652831",
+        "system_snapshot": {
+            "number_of_stars": 3,
+            "number_of_planets": 5
+        }
+    },
+    "system": {
+        "system_info": {
+            "id": "alf Cen",
+            "alias_set": {
+                "item_count": 1,
+                "default_name": "alf Cen",
+                "aliases": [
+                    "alf Cen"
+                ]
+            }
+        },
+        "objects": {
+            "stellar_set": {
+                "item_count": 3,
+                "stars": {
+                    "Proxima Cen": {
+                        "is_host": "True",
+                        "alias_set": {
+                            "item_count": 15,
+                            "default_name": "Proxima Cen",
+                            "aliases": [
+                                "GJ 551",
+                                "LHS 49",
+                                "V0645 Cen",
+                                "alf Cen C",
+                                "HIP 70890",
+                                "IRAS 14260-6227",
+                                "Proxima",
+                                "Proxima Cen",
+                                "Proxima Centauri",
+                                "TYC 9010-04949-1",
+                                "WDS J14396-6050 C",
+                                "2MASS J14294291-6240465",
+                                "Gaia DR3 5853498713190525696",
+                                "TIC 388857263",
+                                "Gaia DR2 5853498713160606720"
+                            ]
+                        }
+                    },
+                    "alf Cen B": {
+                        "is_host": "True",
+                        "alias_set": {
+                            "item_count": 15,
+                            "default_name": "alf Cen B",
+                            "aliases": [
+                                "HR 5460",
+                                "alf Cen",
+                                "LHS 51",
+                                "GJ 559 B",
+                                "HD 128621",
+                                "alf2 Cen",
+                                "alf Cen B",
+                                "HIP 71681",
+                                "SAO 252838 B",
+                                "CPD-60 5483 B",
+                                "IRAS 14359-6037 B",
+                                "WDS J14396-6050 B",
+                                "WISE J143931.26-604959.6",
+                                "2MASS J14393592-6050069 B",
+                                "TIC 471011144"
+                            ]
+                        }
+                    },
+                    "alf Cen A": {
+                        "is_host": "True",
+                        "alias_set": {
+                            "item_count": 14,
+                            "default_name": "alf Cen A",
+                            "aliases": [
+                                "HR 5459",
+                                "LHS 50",
+                                "GJ 559 A",
+                                "HD 128620",
+                                "alf1 Cen",
+                                "alf Cen A",
+                                "HIP 71683",
+                                "SAO 252838 A",
+                                "CPD-60 5483 A",
+                                "Rigil Kentaurus",
+                                "IRAS 14359-6037 A",
+                                "WDS J14396-6050 A",
+                                "2MASS J14393592-6050069 A",
+                                "TIC 471011145"
+                            ]
+                        }
+                    }
+                }
+            },
+            "planet_set": {
+                "item_count": 5,
+                "planets": {
+                    "Proxima Cen b": {
+                        "requested_object": "True",
+                        "alias_set": {
+                            "item_count": 15,
+                            "default_name": "Proxima Cen b",
+                            "aliases": [
+                                "Gaia DR3 5853498713190525696 b",
+                                "GJ 551 b",
+                                "LHS 49 b",
+                                "V0645 Cen b",
+                                "alf Cen C b",
+                                "HIP 70890 b",
+                                "IRAS 14260-6227 b",
+                                "Proxima b",
+                                "Proxima Cen b",
+                                "Proxima Centauri b",
+                                "TYC 9010-04949-1 b",
+                                "WDS J14396-6050 C b",
+                                "2MASS J14294291-6240465 b",
+                                "TIC 388857263 b",
+                                "Gaia DR2 5853498713160606720 b"
+                            ]
+                        }
+                    },
+                    "alf Cen B b": {
+                        "alias_set": {
+                            "item_count": 14,
+                            "default_name": "alf Cen B b",
+                            "aliases": [
+                                "alf Cen B b",
+                                "alf Cen b",
+                                "HR 5460 b",
+                                "LHS 51 b",
+                                "GJ 559 B b",
+                                "HD 128621 b",
+                                "alf2 Cen b",
+                                "HIP 71681 b",
+                                "SAO 252838 B b",
+                                "CPD-60 5483 B b",
+                                "IRAS 14359-6037 B b",
+                                "2MASS J14393592-6050069 B b",
+                                "WISE J143931.26-604959.6 b",
+                                "TIC 471011144 b"
+                            ]
+                        }
+                    },
+                    "Proxima Cen c": {
+                        "alias_set": {
+                            "item_count": 15,
+                            "default_name": "Proxima Cen c",
+                            "aliases": [
+                                "Proxima Cen c",
+                                "Proxima Centauri c",
+                                "Proxima c",
+                                "2MASS J14294291-6240465 c",
+                                "TIC 388857263 c",
+                                "Gaia DR2 5853498713160606720 c",
+                                "HIP 70890 c",
+                                "LHS 49 c",
+                                "IRAS 14260-6227 c",
+                                "TYC 9010-04949-1 c",
+                                "GJ 551 c",
+                                "WDS J14396-6050 C c",
+                                "alf Cen C c",
+                                "V0645 Cen c",
+                                "Gaia DR3 5853498713190525696 c"
+                            ]
+                        }
+                    },
+                    "Proxima Cen d": {
+                        "alias_set": {
+                            "item_count": 14,
+                            "default_name": "Proxima Cen d",
+                            "aliases": [
+                                "Gaia DR3 5853498713190525696 d",
+                                "Proxima Cen d",
+                                "Proxima Centauri d",
+                                "2MASS J14294291-6240465 d",
+                                "TIC 388857263 d",
+                                "Gaia DR2 5853498713160606720 d",
+                                "HIP 70890 d",
+                                "LHS 49 d",
+                                "IRAS 14260-6227 d",
+                                "TYC 9010-04949-1 d",
+                                "GJ 551 d",
+                                "WDS J14396-6050 C d",
+                                "alf Cen C d",
+                                "V0645 Cen d"
+                            ]
+                        }
+                    },
+                    "alf Cen A b": {
+                        "alias_set": {
+                            "item_count": 14,
+                            "default_name": "alf Cen A b",
+                            "aliases": [
+                                "alf Cen A b",
+                                "TIC 471011145 b",
+                                "HR 5459 b",
+                                "LHS 50 b",
+                                "GJ 559 A b",
+                                "HD 128620 b",
+                                "alf1 Cen b",
+                                "HIP 71683 b",
+                                "SAO 252838 A b",
+                                "CPD-60 5483 A b",
+                                "Rigil Kentaurus b",
+                                "IRAS 14359-6037 A b",
+                                "WDS J14396-6050 A b",
+                                "2MASS J14393592-6050069 A b"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
