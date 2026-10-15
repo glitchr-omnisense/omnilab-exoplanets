@@ -79,7 +79,7 @@ final class ExoplanetsSourceTest extends TestCase
     {
         $planet = $this->source()->entity('51 Peg b');
 
-        self::assertSame('simbad:51 Peg b', $planet->id->key(), 'the archive\'s name, in the simbad scheme (the core has no scheme of the archive)');
+        self::assertSame('exoplanet:51 Peg b', $planet->id->key(), 'the archive\'s name, in the core\'s exoplanet scheme');
         self::assertSame('51 Peg b', $planet->label);
         self::assertSame(Domain::ASTRONOMY, $planet->domain);
         self::assertSame('exoplanet', $planet->kind);
@@ -108,8 +108,8 @@ final class ExoplanetsSourceTest extends TestCase
         self::assertFalse($planet->value('controversial'));
         self::assertSame('exoplanets', $planet->property('mass')->source);
         self::assertNull($planet->place, 'a position on the sky is not a place on the Earth');
-        self::assertSame(['simbad:51 Peg b'], $planet->identifiers()->keys());
-        self::assertSame(['simbad:51 Peg', 'simbad:HD 217014', 'simbad:HIP 113357', 'simbad:TIC 139298196', 'simbad:Gaia DR3 2835207319109249920'], $planet->related('host')->keys(), 'the host star by each of its designations');
+        self::assertSame(['exoplanet:51 Peg b', 'simbad:51 Peg b'], $planet->identifiers()->keys(), 'the archive\'s name as SIMBAD reads it too');
+        self::assertSame(['simbad:51 Peg', 'simbad:HD 217014', 'simbad:HIP 113357', 'simbad:TIC 139298196', 'simbad:Gaia DR3 2835207319109249920', 'gaia:2835207319109249920'], $planet->related('host')->keys(), 'the host star by each of its designations, its Gaia DR3 one in the gaia scheme too');
         self::assertCount(1, $this->calls);
         self::assertStringStartsWith('SELECT TOP 1 pl_name, ', $this->calls[0]);
         self::assertStringEndsWith("FROM pscomppars WHERE upper(replace(pl_name, ' ', '')) = '51PEGB'", $this->calls[0]);
@@ -119,14 +119,15 @@ final class ExoplanetsSourceTest extends TestCase
     {
         $planet = $this->source()->entity(Identifier::of(Scheme::SIMBAD, '* 51 Peg b'));
 
-        self::assertSame('simbad:51 Peg b', $planet->id->key());
-        self::assertSame(['simbad:51 Peg b', 'simbad:* 51 Peg b'], $planet->identifiers()->keys(), 'SIMBAD\'s main identifier kept: the same planet');
+        self::assertSame('exoplanet:51 Peg b', $planet->id->key());
+        self::assertSame(['exoplanet:51 Peg b', 'simbad:51 Peg b', 'simbad:* 51 Peg b'], $planet->identifiers()->keys(), 'SIMBAD\'s main identifier kept: the same planet');
+        self::assertSame('51 Peg b', $this->source()->entity('exoplanet:51 Peg b')?->label, 'the core\'s exoplanet scheme');
         self::assertSame('51 Peg b', $this->source()->entity('simbad:* 51 Peg b')?->label);
     }
 
     public function testAStarsDesignationOrAnotherBaseIsRefusedBeforeAnyCall(): void
     {
-        foreach ([Identifier::of(Scheme::SIMBAD, '* 51 Peg'), Identifier::of(Scheme::SIMBAD, 'HD 217014'), Identifier::of(Scheme::SIMBAD, 'Gaia DR3 2835207319109249920'), Identifier::of(Scheme::SIMBAD, '* alf Ori'), Identifier::of(Scheme::WIKIDATA, 'Q242309'), 'Q242309', 'jpl.sbdb:433'] as $id) {
+        foreach ([Identifier::of(Scheme::EXOPLANET, 'Proxima Cen'), 'Gaia DR3 2835207319109249920', Identifier::of(Scheme::SIMBAD, '* 51 Peg'), Identifier::of(Scheme::SIMBAD, 'HD 217014'), Identifier::of(Scheme::SIMBAD, 'Gaia DR3 2835207319109249920'), Identifier::of(Scheme::SIMBAD, '* alf Ori'), Identifier::of(Scheme::WIKIDATA, 'Q242309'), 'Q242309', 'jpl.sbdb:433'] as $id) {
             try {
                 $this->source()->entity($id);
                 self::fail(\sprintf('%s should be refused', $id));
@@ -149,7 +150,7 @@ final class ExoplanetsSourceTest extends TestCase
         self::assertSame('Mass (upper limit)', $planet->property('mass')->label);
         self::assertEquals(new Quantity(9.1, 'Earth Mass'), $planet->value('mass'), 'a limit has no uncertainty');
         self::assertSame('2.1 ± 0.12 Earth Radius', (string) $planet->property('radius'));
-        self::assertSame(['simbad:Kepler-22', 'simbad:TIC 158984573', 'simbad:Gaia DR3 2127941757262806656'], $planet->related('host')->keys());
+        self::assertSame(['simbad:Kepler-22', 'simbad:TIC 158984573', 'simbad:Gaia DR3 2127941757262806656', 'gaia:2127941757262806656'], $planet->related('host')->keys());
         self::assertCount(1, $this->calls);
     }
 

@@ -12,13 +12,13 @@ simple criteria. Through the archive's TAP service, in ADQL, no key.
 ```php
 $archive = (new ExoplanetsSourceFactory($http))->create(['mailto' => 'support@glitchr.io']);
 $planet = $archive->entity('51 Peg b');
-$planet->id;                                   // simbad:51 Peg b
+$planet->id;                                   // exoplanet:51 Peg b (and simbad:51 Peg b among its identifiers)
 $planet->property('mass');                     // 193.87532827 ± 19.06970442 Earth Mass
 $planet->property('orbital_period');           // 4.2307966 ± 0.0000027 days
 $planet->property('equilibrium_temperature');  // 1328.93 K
 $planet->value('discovery_method');            // Radial Velocity
 $planet->value('discovery_year');              // 1995
-$planet->related('host')->keys();              // simbad:51 Peg, simbad:HD 217014, simbad:HIP 113357, simbad:TIC 139298196, simbad:Gaia DR3 2835207319109249920
+$planet->related('host')->keys();              // simbad:51 Peg, simbad:HD 217014, simbad:HIP 113357, simbad:TIC 139298196, simbad:Gaia DR3 2835207319109249920, gaia:2835207319109249920
 $archive->search(new Query('trappist', limit: 5));   // TRAPPIST-1 b, c, d, e, f; the next page from "TRAPPIST-1 f"
 $archive->planets(['method' => 'Transit', 'year' => 2024, 'min_radius' => 0.8, 'max_radius' => 1.25]);   // outside the contract
 ```
@@ -33,8 +33,8 @@ omnilab:
                 throttle: 0                    # seconds between two calls: the archive publishes no rate
 ```
 
-The core has no scheme for the archive's planet names: a planet is named in the `simbad` scheme,
-a name SIMBAD resolves for the planets it lists. With Wikidata and SIMBAD configured too, the
+A planet is named in the core's `exoplanet` scheme by the archive's name (Wikidata's P5667), and
+in the `simbad` scheme too, a name SIMBAD resolves for the planets it lists. With Wikidata and SIMBAD configured too, the
 `Collector` follows a planet from Wikidata's SIMBAD identifier (P3083, `* 51 Peg b`) into SIMBAD
 and the archive at once; the host star's Gaia DR3 designation leads to omnilab/gaia.
 

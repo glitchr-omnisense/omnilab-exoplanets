@@ -32,7 +32,7 @@ the table does not hold: `Proxima Centauri b` is `Proxima Cen b`, `Dimidium` is 
 
 | Method | Reads | Calls |
 |---|---|---|
-| `entity()` | a planet's name - the archive's (`51 Peg b`), spaced otherwise (`Kepler-22b`), SIMBAD's (`* 51 Peg b`, `NAME Proxima Centauri b`, as an `Identifier` of the `simbad` scheme or `simbad:...`), or one the alias service knows (`Dimidium`) | one: `WHERE upper(replace(pl_name, ' ', '')) = '51PEGB'`; when no row, the alias service, then `WHERE pl_name = '...'` - three |
+| `entity()` | a planet's name - the archive's (`51 Peg b`, `exoplanet:51 Peg b`), spaced otherwise (`Kepler-22b`), SIMBAD's (`* 51 Peg b`, `NAME Proxima Centauri b`, as an `Identifier` of the `simbad` scheme or `simbad:...`), or one the alias service knows (`Dimidium`) | one: `WHERE upper(replace(pl_name, ' ', '')) = '51PEGB'`; when no row, the alias service, then `WHERE pl_name = '...'` - three |
 | `search()` | `Query::$text`: the planets whose name or host star's holds it (spaces and case aside), by name; when none, the planet the alias service resolves it to, or the planets of that star; a domain other than astronomy answers nothing | one a page; two more when the alias service is asked |
 | `planets()` | outside the contract (the core's `Query` is a text): the planets that meet every criterion, by name | one a page |
 
@@ -58,7 +58,7 @@ refused too; unknown is `null`. A quote in a name is doubled.
 
 ## What an entity holds
 
-`id` (the archive's name in the `simbad` scheme: `simbad:51 Peg b`), `label` (that name), `domain`
+`id` (the archive's name in the `exoplanet` scheme: `exoplanet:51 Peg b`), `label` (that name), `domain`
 astronomy, `kind` `exoplanet`, `url` (its overview page, `/overview/51%20Peg%20b`), no
 description, no image, no synonyms, no `place` (a position on the sky is not a place on the Earth:
 the core's `Point` is WGS 84), and these properties, in the archive's units (its `TAP_SCHEMA`,
@@ -87,7 +87,7 @@ one, the larger of the two (51 Peg b's mass: +19.07 −15.89, kept as ± 19.07).
 the archive flags as a limit (`lim` 1 or −1) says so in its label ("Mass (upper limit)") and has
 no uncertainty.
 
-`identifiers`: its own, and SIMBAD's main identifier when it was asked by it (`simbad:* 51 Peg
+`identifiers`: its own, the archive's name in the `simbad` scheme (`simbad:51 Peg b`), and SIMBAD's main identifier when it was asked by it (`simbad:* 51 Peg
 b`): the same planet. `related('host')`: the host star, by each designation the archive gives it,
 in the `simbad` scheme - `hostname`, `hd_name`, `hip_name`, `tic_id`, `gaia_dr3_id` (51 Peg b:
 `51 Peg`, `HD 217014`, `HIP 113357`, `TIC 139298196`, `Gaia DR3 2835207319109249920`); a
@@ -95,15 +95,17 @@ microlensing host has its name alone (`OGLE-2014-BLG-0319L`). They are names SIM
 (`$collector->collect('simbad', $planet->related('host')->get(Scheme::SIMBAD))`), and the Gaia DR3
 one is what omnilab/gaia reads.
 
-## The scheme: what the core does not have
+## The schemes
 
-The core has no scheme for the NASA Exoplanet Archive (Wikidata holds its names in P5667, "NASA
-Exoplanet Archive ID", on 12,976 items on 2026-10-15), nor for Gaia DR3 or TIC. The archive's name
-of a planet is kept in the `simbad` scheme, the core's scheme for an astronomical object's name:
-SIMBAD resolves it for the planets it lists (`51 Peg b`, `Kepler-22 b`, `TRAPPIST-1 e`, `TOI-700
-d`, `HD 209458 b`, `Proxima Cen b`: checked on 2026-10-15; SIMBAD writes the spaces as it likes),
-not for every one (a microlensing planet SIMBAD has not catalogued is a name SIMBAD answers
-nothing for). When the core has a scheme of the archive, the id moves to it.
+A planet is named in the core's `exoplanet` scheme by the archive's name (`exoplanet:51 Peg b`;
+Wikidata holds the archive's names in P5667, "NASA Exoplanet Archive ID", on 12,976 items on
+2026-10-15, planets and systems both: `Proxima Cen` names a system, refused here before any call),
+and among its identifiers in the `simbad` scheme too: SIMBAD resolves the archive's name for the
+planets it lists (`51 Peg b`, `Kepler-22 b`, `TRAPPIST-1 e`, `TOI-700 d`, `HD 209458 b`, `Proxima
+Cen b`: checked on 2026-10-15; SIMBAD writes the spaces as it likes), not for every one (a
+microlensing planet SIMBAD has not catalogued is a name SIMBAD answers nothing for). The host
+star's Gaia DR3 designation is related in the `gaia` scheme as well (`gaia:2835207319109249920`).
+Until the core had these schemes (2026-10-15), the id was the `simbad` one.
 
 ## The Collector: 51 Peg b from Wikidata
 

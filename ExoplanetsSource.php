@@ -136,14 +136,14 @@ final class ExoplanetsSource extends HttpSource
     {
         $asked = null;
         if ($id instanceof Identifier) {
-            if (Scheme::SIMBAD !== $id->scheme || !self::isPlanetName($id->value)) {
+            if (!\in_array($id->scheme, [Scheme::EXOPLANET, Scheme::SIMBAD], true) || !self::isPlanetName($id->value)) {
                 throw NotSupportedException::identifier('exoplanets', (string) $id);
             }
             $asked = $id;
             $name = $id->value;
         } else {
             $parsed = Identifier::parse($id);
-            if (null !== $parsed && Scheme::SIMBAD !== $parsed->scheme) {
+            if (null !== $parsed && (!\in_array($parsed->scheme, [Scheme::EXOPLANET, Scheme::SIMBAD], true) || !self::isPlanetName($parsed->value))) {
                 // Another base's identifier (a Wikidata item, a CAS number...): the archive would not know it.
                 throw NotSupportedException::identifier('exoplanets', $id);
             }
@@ -351,9 +351,11 @@ final class ExoplanetsSource extends HttpSource
         $add('controversial', 'Controversial', isset($row['pl_controv_flag']) ? 1 === (int) $row['pl_controv_flag'] : null);
         $add('circumbinary', 'Orbits two stars', isset($row['cb_flag']) ? 1 === (int) $row['cb_flag'] : null);
 
-        // The host star: each of its designations a name SIMBAD resolves, its Gaia DR3 one what omnilab/gaia reads.
-        $host = new Identifiers(array_map(static fn (string $column) => Identifier::tryOf(Scheme::SIMBAD, self::text($row[$column] ?? null)), self::HOST_NAMES));
-        $id = Identifier::of(Scheme::SIMBAD, $name);
+        // The host star: each of its designations a name SIMBAD resolves, its Gaia DR3 one in the core's gaia scheme too (what omnilab/gaia reads).
+        $names = array_map(static fn (string $column) => Identifier::tryOf(Scheme::SIMBAD, self::text($row[$column] ?? null)), self::HOST_NAMES);
+        $gaia = array_map(static fn (?Identifier $name) => null !== $name && str_starts_with($name->value, 'Gaia DR3 ') ? Identifier::tryOf(Scheme::GAIA, $name->value) : null, $names);
+        $host = new Identifiers([...$names, ...$gaia]);
+        $id = Identifier::of(Scheme::EXOPLANET, $name);
 
         return new Entity(
             id: $id,
@@ -361,9 +363,9 @@ final class ExoplanetsSource extends HttpSource
             domain: Domain::ASTRONOMY,
             kind: 'exoplanet',
             properties: $properties,
-            // The name SIMBAD's main identifier gives it ("* 51 Peg b"), when that was asked: the same planet.
-            identifiers: new Identifiers([null !== $asked && !$asked->equals($id) ? $asked : null]),
-            url: self::BASE_URI.'overview/'.rawurlencode($name),
+            // The archive's name as SIMBAD reads it, and SIMBAD's main identifier ("* 51 Peg b") when that was asked: the same planet.
+            identifiers: new Identifiers([Identifier::tryOf(Scheme::SIMBAD, $name), null !== $asked && !$asked->equals($id) ? $asked : null]),
+            url: $id->url(),
             source: 'exoplanets',
             related: \count($host) > 0 ? ['host' => $host] : [],
         );
