@@ -1,6 +1,6 @@
 # omnilab/exoplanets
 
-The NASA Exoplanet Archive for [glitchr/omnilab](https://github.com/glitchr-studio/omnilab): a
+The NASA Exoplanet Archive for [omniscient/omnilab](https://github.com/glitchr-studio/omnilab): a
 confirmed planet beyond the solar system by its name - `51 Peg b`, `Kepler-22b`, `Proxima
 Centauri b`, `Dimidium`, the archive's alias service resolves the names its table does not hold -
 with its mass, radius, density, orbit, equilibrium temperature and insolation, their units and
