@@ -1,5 +1,12 @@
 # omnilab/exoplanets
 
+The NASA Exoplanet Archive (Caltech/IPAC), through its TAP service on the Planetary Systems
+Composite Parameters table (`https://exoplanetarchive.ipac.caltech.edu/TAP/sync`), for
+[omnisense/omnilab](https://github.com/glitchr-omnisense/omnilab): confirmed planets by name -
+mass, radius, orbit, temperature with uncertainties, discovery - with their host star related by
+its designations, as entities; a search; outside the contract, the planets that meet criteria. No
+key.
+
 ## Installation
 
 ```sh
@@ -15,8 +22,49 @@ $archive = (new ExoplanetsSourceFactory($httpClient))->create([
 ]);
 ```
 
-With the Symfony bundle, register `ExoplanetsSourceFactory` as a service (it is autoconfigured as
-a `SourceFactoryInterface`) until the bundle knows it by name.
+With the Symfony bundle, the factory is registered as `exoplanets`.
+
+## Credentials
+
+None: the NASA Exoplanet Archive is free and without registration. Give `mailto`, the address the
+archive writes to before it blocks a caller.
+
+## Options
+
+The factory's options, with the defaults it applies (`ExoplanetsSourceFactory`):
+
+| Option | Type | Default | Required | Effect |
+|---|---|---|---|---|
+| `mailto` | `?string` | null | no | a contact address, in the User-Agent: whom the archive writes to before it blocks a caller |
+| `user_agent` | `?string` | null | no | the whole User-Agent, in place of the one made from `mailto` |
+| `throttle` | `float` | `0` | no | seconds left between two calls: the archive publishes no rate |
+| `base_uri` | `string` | `https://exoplanetarchive.ipac.caltech.edu/` | no | the archive's site: its TAP service (`TAP/sync`) and its alias service |
+
+## Capabilities
+
+`capabilities()` answers `entity`, `search`; an operation it does not answer throws `NotSupportedException` before any call.
+
+| Capability | Supported | |
+|---|---|---|
+| `entity` | yes | a planet's name (the archive's, spaced otherwise, SIMBAD's, or one the alias service knows); a star's designation and another base refused before any call; one TAP query, three with the alias service |
+| `search` | yes | the planets whose name or host star's holds the text, by name, 500 a page at most, the next after the last name; then the alias service; a domain other than astronomy answers an empty page |
+| `series` | no |  |
+| `products` | no |  |
+| `occurrences` | no |  |
+| `datasets` | no |  |
+| `jobs` | no |  |
+| `open` | no |  |
+| `structure` | no |  |
+| `cross_references` | no | the planet's designations in the `exoplanet` and `simbad` schemes; its host star's (SIMBAD, Gaia DR3) are `related` ([The schemes](#the-schemes)) |
+| `forecast` | no |  |
+| `historical` | no |  |
+| `area` | no |  |
+| `station` | no |  |
+| `cloud_cover` | no |  |
+
+Outside the contract, on `Omnilab\Exoplanets\ExoplanetsSource`: `planets(array $criteria = [], int
+$limit = 25, ?string $cursor = null): Page` - the planets that meet every criterion (`host`,
+`method`, `facility`, `year`, `from_year`, `to_year`, `min_mass`... [above](#calls)), by name.
 
 ## Which API: TAP, on the composite table
 
@@ -151,6 +199,50 @@ candidates (TESS and Kepler objects of interest not confirmed), the time series,
 light curves, the per-planet aliases of the alias service (asked only to resolve a name), the
 asynchronous TAP queries, and the spatial constraints (a cone on the sky) are not read.
 
+## Example
+
+```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Omnilab\Exoplanets\ExoplanetsSourceFactory;
+use Symfony\Component\HttpClient\HttpClient;
+
+$archive = (new ExoplanetsSourceFactory(HttpClient::create(['timeout' => 60])))->create(['mailto' => 'you@example.org']);
+
+$planet = $archive->entity('Dimidium');   // a name the alias service knows: 51 Peg b
+echo $planet->label, ': ', $planet->property('mass'), ', period ', $planet->property('orbital_period'), ', discovered ', $planet->value('discovery_year'), ' by ', $planet->value('discovery_method'), "\n";
+
+$page = $archive->planets(['method' => 'Imaging', 'from_year' => 2025, 'max_distance' => 50], 3);
+printf("%s planets imaged since 2025 within 50 pc; the first %d: %s\n", $page->total ?? 'more than 3', count($page), implode(', ', array_map(static fn ($p) => $p->label, $page->items)));
+```
+
+```
+51 Peg b: 193.87532827 ± 19.06970442 Earth Mass, period 4.2307966 ± 0.0000027 days, discovered 1995 by Radial Velocity
+3 planets imaged since 2025 within 50 pc; the first 3: CWISEP J193518.59-154620.3 b, TWA 7 b, bet Pic d
+```
+
+(as answered on 2026-10-27: four calls - TAP, the alias service, TAP again, the criteria; the three are all that match, so `total` is known)
+
+```yaml
+# config/packages/omnilab.yaml
+omnilab:
+    sources:
+        exoplanets: { factory: exoplanets, options: { mailto: '%env(OMNILAB_MAILTO)%' } }
+```
+
+`planets()` is a method of `ExoplanetsSource`, not of the interface the bundle injects: check the instance before calling it.
+
+## Errors
+
+Every call goes through `HttpSource`: a 404 or a 410 (and a 204) is null - an empty page for a list -; a 429 is a `RateLimitedException` (`retryAfter` from `Retry-After`); a 5xx, a time-out or a host that does not answer an `UnavailableException`; any other 4xx a `ProviderException` with its `status` and what the service said; an answer that is not JSON a `ProviderException`, a web page answered for JSON an `UnavailableException`.
+
+Before any call: a star's designation or another base's identifier (`NotSupportedException`); in
+`planets()`, a criterion not read (`NotSupportedException`) or a text where a number is expected
+(`\InvalidArgumentException`). TAP's errors (a VOTable or text naming Oracle's `ORA-` code) are read
+into the `ProviderException`'s message. An unknown planet is null.
+
 ## Verified, and not
 
 Against the real service on 2026-10-15: 51 Peg b by its name, by SIMBAD's `* 51 Peg b` and by
@@ -163,5 +255,18 @@ in 2024 between 0.8 and 1.25 Earth radii (a first page of ten); an ADQL error (4
 saying `ORA-00933`); the Collector's walks above. The fixtures in `Tests/Fixtures/` are its
 answers. The alias service took 3.5 to 5 s a call, TAP about 1.3 s.
 
+Again on 2026-10-27: 51 Peg b by its alias Dimidium, the planets imaged since 2025 within 50 pc
+(three; the example above).
+
 Not verified: a rate limit (none published, none met); a planet whose name holds a quote (none in
 the table); a mirror (`base_uri`).
+
+## Responsibility
+
+This package is an independent, unofficial client: it is not affiliated with, endorsed by or
+sponsored by NASA, IPAC or Caltech. The archive asks to be acknowledged and cited (Christiansen et
+al. 2025, and the table's DOI 10.26133/NEA13), with the literature reference of each value used,
+as the README's [Terms of use](https://github.com/glitchr-omnisense/omnilab-exoplanets#terms-of-use)
+says. Whoever runs the package is responsible for complying with them and for any use made of what
+it returns: see the README's
+[Responsibility](https://github.com/glitchr-omnisense/omnilab-exoplanets#responsibility) section.
