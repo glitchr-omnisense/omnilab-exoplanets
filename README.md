@@ -50,6 +50,17 @@ Composite Parameters) and the literature reference of each value used.
 
 See [docs/](docs/index.md) for what is read, how it maps, and what the archive does not give here.
 
+## Usage policy
+
+Declared as data in [`policy.json`](policy.json) (its pages could not be read on 2026-11-10 (https://exoplanetarchive.ipac.caltech.edu/docs/TAP/usingTAP.html): see the notes in the file), and honoured on every request by the
+core: a limit reached waits when its window ends within `max_wait` seconds, else the request is not
+sent ([Usage policies](https://github.com/glitchr-omnisense/omnilab/blob/1.x/docs/policies.md)).
+
+- Limits: not published (unknown).
+- Licence: not stated; commercial use: unknown.
+- Credit: not required: This research has made use of the NASA Exoplanet Archive, which is operated by the California Institute of Technology, under contract with the National Aeronautics and Space Administration under the Exoplanet Exploration Program. (https://exoplanetarchive.ipac.caltech.edu/).
+- Needs: nothing.
+
 ## Responsibility
 
 This package is an independent, unofficial client: it is not affiliated with, endorsed by or
