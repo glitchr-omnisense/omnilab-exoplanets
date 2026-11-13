@@ -38,6 +38,34 @@ in the `simbad` scheme too, a name SIMBAD resolves for the planets it lists. Wit
 `Collector` follows a planet from Wikidata's SIMBAD identifier (P3083, `* 51 Peg b`) into SIMBAD
 and the archive at once; the host star's Gaia DR3 designation leads to omnilab/gaia.
 
+## Install and a first call
+
+```sh
+composer require omnilab/exoplanets
+```
+
+A real call, with no account and no key: 51 Pegasi b in the NASA Exoplanet Archive. `mailto` is your
+address, sent in the User-Agent so that the service can reach you before it blocks a caller; the
+source keeps to the limits its [`policy.json`](policy.json) declares.
+
+```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Omnilab\Exoplanets\ExoplanetsSourceFactory;
+
+$archive = (new ExoplanetsSourceFactory())->create(['mailto' => 'you@example.org']);   // your address, in the User-Agent
+$planet = $archive->entity('51 Peg b');
+echo $planet->label, ': ', $planet->property('orbital_period'), ', discovered ', $planet->value('discovery_year'), "\n";
+```
+
+Its output on 2026-11-13:
+
+```
+51 Peg b: 4.2307966 ± 0.0000027 days, discovered 1995
+```
+
 ## Terms of use
 
 The NASA Exoplanet Archive is operated by Caltech/IPAC for NASA, free and without registration;
